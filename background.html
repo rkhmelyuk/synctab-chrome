@@ -17,13 +17,16 @@
 					if (tabs.length > 0) {
 						for (var i = 0; i < tabs.length; i++) {
 							var tab = tabs[i];
-							//tabsList.push(tab);
 							chrome.tabs.create({
 								url: tab.link,
 								selected: false,
 								pinned: false
 							})
 						}
+						webkitNotifications.createNotification(
+							"icon48.png", "SyncTab: new tabs", 
+							tabs.length + " shared tabs were opened"
+						).show();
 					}
 				}
 			}
