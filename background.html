@@ -1,52 +1,97 @@
 <html>
+	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript">
 
 		var syncPeriod = 60000;
-		var syncTabServiceUrl = "http://localhost:8080/synctab-server";
+		var syncTabServiceUrl = "http://localhost:8080/synctab-server/api";
+
+		var refreshInterval;
 
 		function load() {
+			if (needLogin()) {
+			 	chrome.tabs.create({url: 'login.html'});
+			}
+			else {
+				refreshSyncedTabs();
+				refreshInterval = setInterval(refreshSyncedTabs, syncPeriod);
+			}
+		}
+
+		function authorize(email, password, callback) {
+			$.post(syncTabServiceUrl + "/authorize", {email: email, password: password}, 
+				function(json, textStatus) {
+					if (json.status) {
+						login(json.token)
+						callback(true);
+					}
+					else {
+						callback(false);
+					}
+				}
+			);
+		}
+
+		function needLogin() {
+			var token = localStorage['token'];
+			return token == null || token == undefined;
+		}
+
+		function login(token) {
+			localStorage['token'] = token;
+
 			refreshSyncedTabs();
-			setInterval(refreshSyncedTabs, syncPeriod);
+			refreshInterval = setInterval(refreshSyncedTabs, syncPeriod);
+		}
+
+		function logout() {
+			cleanInterval(refreshInterval);
+			localStorage['token'] = null;
 		}
 
 		function refreshSyncedTabs() {
-			var xhr = new XMLHttpRequest();
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-					var tabs = JSON.parse(xhr.responseText);
-					if (tabs.length > 0) {
-						for (var i = 0; i < tabs.length; i++) {
-							var tab = tabs[i];
-							chrome.tabs.create({
-								url: tab.link,
-								selected: false,
-								pinned: false
-							})
-						}
-						webkitNotifications.createNotification(
-							"icon48.png", "SyncTab: new tabs", 
-							tabs.length + " shared tabs were opened"
-						).show();
-					}
+			if (!needLogin()) {
+					
+				// get last sync timestamp
+				var timestamp = localStorage['lastSyncDate'];
+				if (timestamp == undefined) {
+					var yesterday = new Date();
+					yesterday.setDate(yesterday.getDate() - 1);
+					timestamp = yesterday.getTime();
 				}
+
+				var token = localStorage['token'];
+				$.get(syncTabServiceUrl + "/getSharedTabsSince?since=" + timestamp + "&token=" + token, 
+					function(json, textStatus, jqXHR) {
+						if (jqXHR.status == 200) {
+							if (json.status) {
+								var tabs = json.tabs;
+								if (tabs.length > 0) {
+									for (var i = 0; i < tabs.length; i++) {
+										var tab = tabs[i];
+										chrome.tabs.create({
+											url: tab.link,
+											selected: false,
+											pinned: false
+										})
+									}
+									webkitNotifications.createNotification(
+										"icon48.png", "SyncTab: new tabs", 
+										tabs.length + " shared tabs were opened"
+									).show();
+
+									// save sync timestamp
+									localStorage['lastSyncDate'] = new Date().getTime();
+								}
+							}
+						}
+						else if (jqXHR.status == 401) {
+							logout();
+						}
+				});
 			}
-
-
-			// get last sync timestamp
-			var timestamp = localStorage['lastSyncDate'];
-			if (timestamp == undefined) {
-				var yesterday = new Date();
-				yesterday.setDate(yesterday.getDate() - 1);
-				timestamp = yesterday.getTime();
+			else {
+				cleanInterval(refreshInterval);
 			}
-
-			xhr.open("GET", syncTabServiceUrl + "/api/getSharedTabs?since=" + timestamp, true);
-			xhr.send();
-
-
-			// FIXME - get a date always for GMT
-			// save sync timestamp
-			localStorage['lastSyncDate'] = new Date().getTime();
 		}
 
 		load();
