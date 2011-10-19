@@ -3,7 +3,7 @@
 	<script type="text/javascript">
 
 		var syncPeriod = 60000;
-		var syncTabServiceUrl = "http://localhost:8080/synctab-server/api";
+		var syncTabServiceUrl = "http://synctabapp.khmelyuk.com/api";
 
 		var refreshInterval;
 
@@ -12,7 +12,6 @@
 			 	chrome.tabs.create({url: 'login.html'});
 			}
 			else {
-				refreshSyncedTabs();
 				refreshInterval = setInterval(refreshSyncedTabs, syncPeriod);
 			}
 		}
@@ -33,6 +32,7 @@
 
 		function needLogin() {
 			var token = localStorage['token'];
+			console.log(token);
 			return token == null || token == undefined;
 		}
 
@@ -44,8 +44,9 @@
 		}
 
 		function logout() {
-			cleanInterval(refreshInterval);
-			localStorage['token'] = null;
+			clearInterval(refreshInterval);
+			delete localStorage['token'];
+			chrome.tabs.create({url: 'login.html'});
 		}
 
 		function refreshSyncedTabs() {
@@ -60,8 +61,11 @@
 				}
 
 				var token = localStorage['token'];
-				$.get(syncTabServiceUrl + "/getSharedTabsSince?since=" + timestamp + "&token=" + token, 
-					function(json, textStatus, jqXHR) {
+				$.ajax({
+					url: syncTabServiceUrl + "/getSharedTabs", 
+					dataType: 'json', 
+					data: {'ts': timestamp, 'token': token},
+					success: function(json, textStatus, jqXHR) {
 						if (jqXHR.status == 200) {
 							if (json.status) {
 								var tabs = json.tabs;
@@ -84,13 +88,17 @@
 								}
 							}
 						}
-						else if (jqXHR.status == 401) {
+					},
+					error: function(jqXHR) {
+						if (jqXHR.status == 401) {
+							console.log("logout");
 							logout();
 						}
+					}
 				});
 			}
 			else {
-				cleanInterval(refreshInterval);
+				clearInterval(refreshInterval);
 			}
 		}
 

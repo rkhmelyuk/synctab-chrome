@@ -1,13 +1,13 @@
 {
   "name": "SyncTab",
   "version": "1.0",
-  "description": "Synchronize Tabs from Android.",
+  "description": "Send tabs from phone to browser.",
   "background_page": "background.html",
   "permissions": [
   	"tabs",
   	"background",
   	"notifications",
-    "http://localhost/"
+    "http://synctabapp.khmelyuk.com/"
   ],
   "icons": {
     "16": "icon16.png",
