@@ -15,24 +15,36 @@
 				$('#loggedInAlreadyContent').show();
 				$('#username').text(bgPage.getUsername());
 			}
+
+			$("#email").change(function() {
+				validateEmail($(this).val().trim());
+			});
+			$("#password").change(function() {
+				validatePassword($(this).val().trim());
+			});
 			
-			$('#loginForm').submit(function() {
-				var email = $("#email").val();
-				var password = $("#password").val();
-				if (email && password) {
-					bgPage.authorize2(email, password, function(status) {
+			$('#loginForm').submit(function(e) {
+				e.preventDefault();
+
+				var email = $("#email").val().trim();
+				var password = $("#password").val().trim();
+				var hasError = false;
+
+				hasError |= validateEmail(email);
+				hasError |= validatePassword(password);
+
+				if (!hasError) {
+					bgPage.authorize(email, password, function(status) {
 						if (status) {
 							$("#loginContent").hide();
 							$("#loggedInNowContent").show();
 						}
 						else {
-							// TODO - show error
+							$('#loginError').text("Incorrect Email or Password").show();
 						}
 					});
 				}
-				else {
-					// TODO - show error
-				}
+
 				return false;
 			});
 
@@ -44,6 +56,26 @@
 				$('#loggedInAlreadyContent').hide();
 			});
 		});
+
+		function validateEmail(email) {
+			if (!email) {
+				$('#emailError').text("Email is required").show();
+				return true;
+			}
+			
+			$('#emailError').hide();
+			return false;
+		}
+
+		function validatePassword(password) {
+			if (!password) {
+				$('#passwordError').text("Password is required").show();
+				return true;
+			}
+			
+			$('#passwordError').hide();
+			return false;
+		}
 	</script>
 </head>
 <body>
@@ -51,15 +83,19 @@
 		<div id="loginContent">
 			<form id="loginForm" action="">
 				<h1><span>SyncTab:</span> Login</h1>
+
+				<p id="loginError" class="formError"></p>
 				
 				<p>
 					<label for="email">Your Email</label>
 					<input type="text" id="email" value="" maxlength="400" autofocus="true"/>
+					<span id="emailError" class="error"></span>
 				</p>
 
 				<p>
 					<label for="password">Your Password</label>
 					<input type="password" id="password" value="" maxlength="100"/>
+					<span id="passwordError" class="error"></span>
 				</p>
 
 				<p><input type="submit" id="login" class="mainButton" value="Login"/></p>
@@ -71,14 +107,14 @@
 		<div id="loggedInNowContent" class="notice" style="display: none">
 			<h2><span>SyncTab:</span> Notice</h2>
 			<p>
-				You are logged in now.
+				You are logged in now.<br/><br/>
 				<a href="javascript:void(0);" onclick="window.close()">Continue Your Work</a>
 			</p>
 		</div>
 		<div id="loggedInAlreadyContent" class="notice" style="display: none">
 			<h2><span>SyncTab:</span> Notice</h2>
 			<p>
-				You are logged in as <span id="username"></a> already.<br/><br/>
+				You are logged in as <span id="username" class="custom"></span> already.<br/><br/>
 				<a href="javascript:void(0);" id="logout">Logout</a> &nbsp;|&nbsp;
 				<a href="javascript:void(0);" onclick="window.close()">Close This Window</a>
 			</p>

@@ -10,19 +10,21 @@ body {
 h1 { padding: 15px 0 15px; font-size: 30px; color: #444444; }
 h1 span, h2 span { color: #777777; }
 
-p { margin: 15px 0; }
+p { margin: 10px 0; }
 
 a { color: #073594; text-decoration: none; }
 a:hover { color: #073594; text-decoration: underline; }
 
+label { color: #555555; padding: 4px 0; font-size: 15px; display: block; }
 
 .clear { clear: both; }
-
-label { color: #555555; padding: 5px 0; font-size: 15px; display: block; }
+.custom { font-family: monospace; }
+.error { color: #ff0000; display: none;}
+.formError { color: #ff0000; display: none; font-size: 15px; }
 
 #content {
 	width: 480px; height: auto;
-	margin: 10% auto 0 auto; padding: 20px;
+	margin: 10% auto 0 auto; padding: 15px;
 	background: #ffffff;
 
 	border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px;

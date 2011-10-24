@@ -16,8 +16,7 @@
 			}
 		}
 
-		function authorize2(email, password, callback) {
-			console.log(2, email, password);
+		function authorize(email, password, callback) {
 			$.post(syncTabServiceUrl + "/authorize", {email: email, password: password}, 
 				function(json, textStatus) {
 					if (json.status) {
