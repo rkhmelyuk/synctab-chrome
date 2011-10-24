@@ -1,0 +1,144 @@
+* { margin: 0; padding: 0; }
+
+body {
+	background: url('bg.png');
+	/*text-shadow: 1px 1px 1px #ffffff;*/
+	font: 13px 'Alike', freesans,clean,sans-serif; 
+}
+
+h1 { padding: 15px 0 20px; font-size: 30px; color: #333333; }
+h1 span { color: #777777; }
+
+p { margin: 10px 0; }
+
+.clear { clear: both; }
+
+label { color: #444444; padding: 5px 0; font-size: 15px; display: block; }
+
+#content {
+	width: 400px; height: auto;
+	margin: 10% auto 0 auto; padding: 20px;
+	background: #ffffff;
+
+	border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px;
+	border: 1px solid #e0e0e0; box-shadow: 0 1px 10px #afafaf;
+}
+
+input[type="text"], input[type="password"] { 
+	border: 1px solid #dfdfdf; 
+	font-family: arial; font-size: 1.2em;
+	width: 350px; padding: 5px; 
+	border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px;
+}
+input[type="text"]:hover, input[type="password"]:hover { border: 1px solid #bbbbbb; font-size: 1.2em; }
+
+button#login { 
+	cursor: pointer; 
+    padding: 9px 40px; margin: 5px 0;
+    box-shadow: 1px 1px 2px #888888;
+    border: none;
+    font: 15px 'Alike', freesans,clean,sans-serif; 
+    line-height: 20px; color: white; text-shadow: 0 1px 1px #222222;
+    border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#3F6ED4), to(#2B55AD));}
+
+button#login:hover {
+    background: -webkit-gradient(linear, left top, left bottom, from(#2253BA), to(#073594));
+}
+
+button#login:active {
+    background: -webkit-gradient(linear, left top, left bottom, from(#073594), to(#2253BA));
+}
+
+
+/*
+div#contentWrapper { width: 800px;  margin: 0 auto -50px auto; }
+
+input[type="text"], textarea { border: 1px solid #efefef; padding: 5px; font-family: arial; }
+input[type="text"]:hover, textarea:hover { border: 1px solid #d0d0d0; }
+
+a { color: #003399; margin: 0; border: none; cursor: pointer;
+    outline: none; text-decoration: none; text-shadow: #e0e0e0 0px 1px; }
+a:hover, a.selected { color: #2255bb; text-decoration: underline; }
+
+a.remove { color: #ff0000; font-size: 0.95em;}
+
+h1 { padding: 15px 0 20px; font-size: 34px; color: #2f2f2f; text-shadow: #d0d0d0 1px 1px 3px; }
+h2, h3, h4, h5, h6 { color: #2f2f2f; text-shadow: #d0d0d0 1px 1px; padding: 10px 0;}
+h4, h5, h6 { padding: 5px 0; }
+
+#tagsList {
+    float: left; width: 190px; margin: 10px 5px 0 0; padding: 4px 5px;
+    text-align: justify; border: 1px solid transparent;}
+#tagsList:hover { border: 1px solid #e0e0e0; box-shadow: 0 1px 10px #afafaf; }
+
+#tagsList .tag { line-height: 18px; padding: 4px 0;}
+
+#thoughtsList { float: left; width: 590px; padding: 4px 0 0 ; }
+#thoughtsList .thought {
+    margin: 0 0; padding: 8px 5px;
+    border: 1px solid #efefef;
+    border-top-color: transparent;
+    border-bottom-style: dashed;
+    border-radius: 1px;
+}
+#thoughtsList .thought.first { border-top: 1px solid #efefef; }
+#thoughtsList .thought:hover { border: 1px solid #e0e0e0; box-shadow: 0 1px 10px #afafaf;}
+
+#thoughtsList .thought .text { font-size: 1.2em; padding: 4px 0; }
+#thoughtsList .thought .tags { padding: 4px 0; }
+#thoughtsList .thought .date { float: left; height: 18px; font-size: 0.9em; }
+#thoughtsList .thought .date a { color: #777777;}
+#thoughtsList .thought .buttons { float: right; display: none; height: 18px; }
+#thoughtsList .thought:hover .buttons { display: inline; }
+
+.markup h1 { font-size: 1.5em; padding: 3px 0 5px; color: #000000; text-shadow: #d0d0d0 1px 1px 2px; }
+.markup h2 { font-size: 1.4em; padding: 2px 0 3px; color: #000000; text-shadow: #d0d0d0 1px 1px 2px; }
+.markup h3 { font-size: 1.3em; padding: 2px 0 2px; color: #000000; text-shadow: #d0d0d0 1px 1px 2px; }
+.markup h4 { font-size: 1.2em; color: #000000; text-shadow: #d0d0d0 1px 1px 2px; }
+.markup h5 { font-size: 1.1em; color: #000000; text-shadow: #d0d0d0 1px 1px 2px; }
+.markup h6 { font-size: 1.0em; color: #000000; text-shadow: #d0d0d0 1px 1px 2px; }
+.markup code { font-family: monospace monaco "Courier New"; font-size: 0.9em; }
+.markup p { padding: 2px 0 2px 0; }
+.markup ul { padding: 2px 0 2px 30px; }
+.markup ul li { padding: 1px 0; }
+
+#thoughtsList #loadMore { width: 100%; height: 20px; cursor: pointer; line-height: 20px;
+    text-align: center; padding: 10px 0; border: 1px solid #efefef; margin: 10px 0;
+    box-shadow: 0 0 5px #777777; }
+#thoughtsList #loadMore:hover {
+    border: 1px solid #dfdfdf; background-color: #efefef;
+    text-shadow: #ffffff 1px 1px; box-shadow: 0 0 10px #777777;}
+
+#postForm #text { width: 100%; height: 140px; font-size: 15px; }
+#postForm #tags { width: 100%; }
+#postForm .buttons { padding: 5px 0; }
+
+#saveForm #text { width: 100%; height: 140px; font-size: 15px; }
+#saveForm #tags { width: 100%; }
+#saveForm .buttons { padding: 5px 0; }
+
+#thoughtText { font-size: 24px; font-family: serif; text-shadow: #e0e0e0 1px 1px; }
+
+
+.buttons { text-align: right; }
+.buttons a { margin: 3px 0 3px 5px; }
+
+.error { font-size: 1.2em; color: #cc0000; font-weight: 400; padding: 10px 0;}
+
+.colorizeTag input { width: 240px; height: 16px; float: left; }
+.colorizeTag .colors { float: left; padding-left: 20px;}
+.colorizeTag .colors .title { float: left; font-weight: bold; line-height: 24px; margin-right: 10px}
+.colorizeTag .colors .color { height: 14px; width: 14px; float: left; margin: 5px 5px; border-radius: 2px; }
+
+.colorizeTag .colors .yellow { background: -webkit-gradient(linear, left top, left bottom, from(#ffff66), to(#ffff99));  }
+.colorizeTag .colors .lightYellow { background: -webkit-gradient(linear, left top, left bottom, from(#ffff99), to(#ffffbb));  }
+.colorizeTag .colors .red {background: -webkit-gradient(linear, left top, left bottom, from(#ff3333), to(#ff6666));  } 
+.colorizeTag .colors .lightRed { background-color: #ffcccc;  }
+.colorizeTag .colors .blue { background-color: #3399ff; }
+.colorizeTag .colors .lightBlue { background-color: #ccccff; }
+.colorizeTag .colors .green { background-color: #66cc00; }
+.colorizeTag .colors .lightGreen { background-color: #ccffcc; }
+.colorizeTag .colors .gray { background-color: #bbbbbb; }
+.colorizeTag .colors .lightGray { background-color: #cccccc; }
+*/

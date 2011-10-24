@@ -1,9 +1,13 @@
 <html>
 <head>
 	<title>SyncTab: Login</title>
+	<link rel="stylesheet" type="text/css" href="styles.css"/>
+	<link href='http://fonts.googleapis.com/css?family=Alike' rel='stylesheet' type='text/css'>
+
 	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			/*
 			var bgPage = chrome.extension.getBackgroundPage();
 
 			if (!bgPage.needLogin()) {
@@ -30,30 +34,33 @@
 					}
 				});
 			}
+			*/
 		});
 	</script>
 </head>
 <body>
-	<div id="loginContent">
-		<h1>SyncTab: Login</h1>
-		
-		<p>
-			<label for="email">Email</label>
-			<input type="text" id="email" value="" maxlength="400"/>
-		</p>
+	<div id="content">
+		<div id="loginContent">
+			<h1><span>SyncTab:</span> Login</h1>
+			
+			<p>
+				<label for="email">Your Email</label>
+				<input type="text" id="email" value="" maxlength="400" autofocus="true"/>
+			</p>
 
-		<p>
-			<label for="password">Password</label>
-			<input type="password" id="password" value="" maxlength="100"/>
-		</p>
+			<p>
+				<label for="password">Your Password</label>
+				<input type="password" id="password" value="" maxlength="100"/>
+			</p>
 
-		<input type="button" id="login" value="Login"/>
-	</div>
-	<div id="loggedInNowContent" style="display: none">
-		You are logged in now.
-	</div>
-	<div id="loggedInAlreadyContent" style="display: none">
-		You are logged in already.
+			<button id="login">Login</button>
+		</div>
+		<div id="loggedInNowContent" style="display: none">
+			You are logged in now.
+		</div>
+		<div id="loggedInAlreadyContent" style="display: none">
+			You are logged in already.
+		</div>
 	</div>
 </body>
 </html>

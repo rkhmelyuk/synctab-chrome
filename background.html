@@ -42,10 +42,15 @@
 			refreshInterval = setInterval(refreshSyncedTabs, syncPeriod);
 		}
 
-		function logout() {
+		function cleanSession() {
 			clearInterval(refreshInterval);
 			delete localStorage['token'];
 			chrome.tabs.create({url: 'login.html'});
+		}
+
+		function logout() {
+			// TODO - logout remotely 
+			cleanSession();
 		}
 
 		function refreshSyncedTabs() {
@@ -90,8 +95,7 @@
 					},
 					error: function(jqXHR) {
 						if (jqXHR.status == 401) {
-							console.log("logout");
-							logout();
+							cleanSession();
 						}
 					}
 				});
