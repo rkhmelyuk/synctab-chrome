@@ -16,11 +16,12 @@
 			}
 		}
 
-		function authorize(email, password, callback) {
+		function authorize2(email, password, callback) {
+			console.log(2, email, password);
 			$.post(syncTabServiceUrl + "/authorize", {email: email, password: password}, 
 				function(json, textStatus) {
 					if (json.status) {
-						login(json.token)
+						login(email, json.token)
 						callback(true);
 					}
 					else {
@@ -35,22 +36,31 @@
 			return token == null || token == undefined;
 		}
 
-		function login(token) {
+		function login(email, token) {
+			localStorage['email'] = email;
 			localStorage['token'] = token;
 
 			refreshSyncedTabs();
 			refreshInterval = setInterval(refreshSyncedTabs, syncPeriod);
 		}
 
-		function cleanSession() {
-			clearInterval(refreshInterval);
-			delete localStorage['token'];
-			chrome.tabs.create({url: 'login.html'});
+		function getUsername() {
+			return localStorage['email'];
 		}
 
-		function logout() {
+		function logout(showLoginPage) {
 			// TODO - logout remotely 
-			cleanSession();
+			clearSession();
+
+			if (showLoginPage) {
+				chrome.tabs.create({url: 'login.html'});
+			}
+		}
+
+		function clearSession() {
+			clearInterval(refreshInterval);
+			delete localStorage['token'];
+			delete localStorage['email'];
 		}
 
 		function refreshSyncedTabs() {
@@ -95,7 +105,7 @@
 					},
 					error: function(jqXHR) {
 						if (jqXHR.status == 401) {
-							cleanSession();
+							logout(true);
 						}
 					}
 				});

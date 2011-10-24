@@ -1,0 +1,80 @@
+<html>
+<head>
+	<title>SyncTab: Login</title>
+	<link rel="stylesheet" type="text/css" href="styles.css"/>
+	<link href='http://fonts.googleapis.com/css?family=Alike' rel='stylesheet' type='text/css'>
+
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+			var bgPage = chrome.extension.getBackgroundPage();
+
+			if (!bgPage.needLogin()) {
+				$('#loginContent').hide();
+				$("#loggedInNowContent").hide();
+				$('#loggedInAlreadyContent').show();
+			}
+			else {
+				$('#login').click(function() {
+					var email = $("#email").val();
+					var password = $("#password").val();
+					if (email && password) {
+						bgPage.authorize(email, password, function(status) {
+							if (status) {
+								$("#loginContent").hide();
+								$("#loggedInNowContent").show();
+
+								window.close();
+							}
+						});
+					}
+					else {
+						
+					}
+				});
+			}
+			*/
+		});
+	</script>
+</head>
+<body>
+	<div id="content">
+		<div id="loginContent">
+			<h1><span>SyncTab:</span> Register</h1>
+			
+			<p>
+				<label for="email">Your Email</label>
+				<input type="text" id="email" value="" maxlength="400" autofocus="true"/>
+			</p>
+
+			<p>
+				<div>
+					<div style="float: left;"><label for="password">Your Password</label></div>
+					<div style="float: right;">
+						<input type="checkbox" id="check"/> <label for="check">Check Password</label>
+					</div>
+				</div>
+				<input type="password" id="password" value="" maxlength="100"/>
+			</p>
+
+			<p><button id="register" class="mainButton">Register</button></p>
+			<div class="clear"></div>
+
+		</div>
+		<div id="loggedInNowContent" style="display: none">
+			You are logged in now.
+		</div>
+		<div id="loggedInAlreadyContent" style="display: none">
+			You are logged in already.
+		</div>
+
+		
+		<div id="footer">
+			<div id="left">Copyright (c) 2011 <a href="http://www.khmelyuk.com">Ruslan Khmelyuk</a></div>
+			<div id="right"><a href="http://synctab.khmelyuk.com">synctab.khmelyuk.com</a></div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</body>
+</html>
