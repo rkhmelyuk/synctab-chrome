@@ -5,6 +5,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Alike' rel='stylesheet' type='text/css'>
 
 	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="synctab.js"></script>
 	<script type="text/javascript" src="common.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -34,7 +35,7 @@
 				hasError |= validatePassword(password);
 
 				if (!hasError) {
-					bgPage.register(email, password, function(status, msg) {
+					SyncTab.register(email, password, function(status, msg) {
 						if (status) {
 							$("#formContent").hide();
 							$("#registeredNowContent").show();
