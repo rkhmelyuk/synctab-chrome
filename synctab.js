@@ -3,6 +3,12 @@ var _optionWrapper = function(name) {
 		get: function() {
 			return localStorage[name];
 		},
+		getInt: function() {
+			return parseInt(localStorage[name]);
+		},
+		getBoolean: function() {
+			return localStorage[name] === 'true';
+		},
 		set: function(value) {
 			localStorage[name] = value;
 		},
@@ -60,7 +66,6 @@ var SyncTab = {
 		chrome.tabs.create({url: 'login.html'});	
 	},
 
-
 	/**
 	 * Open new tabs for each received shared tab, 
 	 * and show notification if need.
@@ -74,7 +79,7 @@ var SyncTab = {
 			}
 
 			// Show notification if enabled.
-			if (SyncTab.options.showNotifications.get()) {
+			if (SyncTab.options.showNotifications.getBoolean()) {
 				SyncTab.showNotification(tabs);
 			}
 
@@ -83,12 +88,23 @@ var SyncTab = {
 		}
 	},
 
+	/**
+	 * Handle new tab: open and add to bookmarks if enabled.
+	 */
 	handleNewTab: function(tab) {
 		chrome.tabs.create({
 			url: tab.link,
-			selected: false,
+			selected: SyncTab.options.selectOpenedTab.getBoolean(),
 			pinned: false
 		});
+
+		if (SyncTab.options.addToBookmarks.getBoolean()) {
+			chrome.bookmarks.create({
+				parentId: "1",
+				url: tab.link,
+				title: tab.title
+			});
+		}
 	},
 
 	/**

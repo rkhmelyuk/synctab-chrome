@@ -77,13 +77,11 @@
 		function startRefreshWithInterval() {
 			refreshInterval = setInterval(
 				refreshSyncedTabs, 
-				parseInt(SyncTab.options.refreshInterval.get()));
-			console.log("started refresh interval ", parseInt(SyncTab.options.refreshInterval.get()));
+				SyncTab.options.refreshInterval.getInt());
 		}
 
 		function stopRefreshWithInterval() {
 			if (refreshInterval) {
-				console.log("clear refresh interval.");
 				clearInterval(refreshInterval);
 			}
 		}

@@ -7,9 +7,9 @@
   "options_page": "options.html",
   "permissions": [
   	"tabs",
+    "bookmarks",
   	"background",
   	"notifications",
-    "bookmarks",
     "http://synctabapp.khmelyuk.com/"
   ],
   "icons": {

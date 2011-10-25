@@ -29,8 +29,7 @@
 				$('#guest').show();
 			});
 
-			$('#optionsForm').submit(function(e) {
-				e.preventDefault();
+			$('.optionValue').change(function(e) {
 
 				var refreshInterval = $("#refreshInterval").val();
 				var addToBookmarks = $("#addToBookmarks").val().trim();
@@ -43,10 +42,6 @@
 				options.showNotifications.set(showNotifications);
 
 				bgPage.optionsChanged();
-
-				$('#saveOptionsStatus').show().delay(2500).fadeOut('fast');
-				
-				return false;
 			});
 		});
 	</script>
@@ -54,90 +49,86 @@
 <body>
 	<div id="content" class="options">
 		<div id="formContent">
-			<form id="optionsForm" action="">
-				<h1><span>SyncTab:</span> Options</h1>
+			
+			<h1><span>SyncTab:</span> Options</h1>
 
-				<div id="guest" style="display: none; float: right;">
-					<a href="login.html">Login</a> -
-					<a href="register.html">Register Now</a>
+			<p id="guest" style="display: none; float: right;">
+				<a href="login.html">Login</a> -
+				<a href="register.html">Register Now</a>
+			</p>
+			<div class="clear"></div>
+
+			<div id="accountInfo" class="option">
+				<div class="info">
+					<div class="title">Account</div>
+					<div class="description">What account you're currently using</div>
+				</div>
+				<div class="value">
+					<strong><span id="email"></span></strong>&nbsp;&nbsp;
+					<button id="logout" class="logoutButton">Logout</button>
 				</div>
 				<div class="clear"></div>
+			</div>
 
-				<div id="accountInfo" class="option">
-					<div class="info">
-						<div class="title">Account</div>
-						<div class="description">What account you're currently using</div>
-					</div>
-					<div class="value">
-						<strong><span id="email"></span></strong>&nbsp;&nbsp;
-						<button id="logout" class="logoutButton">Logout</button>
-					</div>
-					<div class="clear"></div>
+			<div class="option">
+				<div class="info">
+					<div class="title">Refresh Period</div>
+					<div class="description">How often to check for and pull new tabs?</div>
 				</div>
-
-				<div class="option">
-					<div class="info">
-						<div class="title">Refresh Period</div>
-						<div class="description">How often to check for and pull new tabs?</div>
-					</div>
-					<div class="value">
-						<select id="refreshInterval">
-							<option value="60000">1 minute</option>
-							<option value="180000">3 minutes</option>
-							<option value="300000">5 minutes</option>
-							<option value="600000">10 minutes</option>
-						</select>
-					</div>
-					<div class="clear"></div>
+				<div class="value">
+					<select id="refreshInterval" class="optionValue">
+						<option value="60000">1 minute</option>
+						<option value="180000">3 minutes</option>
+						<option value="300000">5 minutes</option>
+						<option value="600000">10 minutes</option>
+					</select>
 				</div>
-
-				<div class="option">
-					<div class="info">
-						<div class="title">Show Notifications</div>
-						<div class="description">Do you want to see any notifications about just opened tabs?</div>
-					</div>
-					<div class="value">
-						<select id="showNotifications">
-							<option value="true">Yes</option>
-							<option value="false">No</option>
-						</select>
-					</div>
-					<div class="clear"></div>
-				</div>
-
-				<div class="option">
-					<div class="info">
-						<div class="title">Select Tab on Open</div>
-						<div class="description">Do you want to select a new tab when it's open in a browser?</div>
-					</div>
-					<div class="value">
-						<select id="selectOpenedTab">
-							<option value="true">Yes</option>
-							<option value="false">No</option>
-						</select>
-					</div>
-					<div class="clear"></div>
-				</div>
-
-				<div class="option">
-					<div class="info">
-						<div class="title">Add Tabs to Bookmarks</div>
-						<div class="description">We may add a shared tabs to the browser bookmarks, so later you can back to them (of course, if you don't forget about bookmarks). Do you want that?</div>
-					</div>
-					<div class="value">
-						<select id="addToBookmarks">
-							<option value="true">Yes</option>
-							<option value="false">No</option>
-						</select>
-					</div>
-					<div class="clear"></div>
-				</div>
-
-				<input type="submit" id="save" class="mainButton" value="Save"/></p>
-				<p id="saveOptionsStatus">Saved!</p>
 				<div class="clear"></div>
+			</div>
 
-			</form>
+			<div class="option">
+				<div class="info">
+					<div class="title">Show Notifications</div>
+					<div class="description">Do you want to see notifications about just opened tabs?</div>
+				</div>
+				<div class="value">
+					<select id="showNotifications" class="optionValue">
+						<option value="true">Yes</option>
+						<option value="false">No</option>
+					</select>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="option">
+				<div class="info">
+					<div class="title">Select Tab on Open</div>
+					<div class="description">Do you want to select a new tab when it's open in a browser?</div>
+				</div>
+				<div class="value">
+					<select id="selectOpenedTab" class="optionValue">
+						<option value="true">Yes</option>
+						<option value="false">No</option>
+					</select>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<div class="option">
+				<div class="info">
+					<div class="title">Add Tabs to Bookmarks</div>
+					<div class="description">We may add a shared tabs to the browser bookmarks, so later you can back to them (of course, if you don't forget about bookmarks). Do you want that?</div>
+				</div>
+				<div class="value">
+					<select id="addToBookmarks" class="optionValue">
+						<option value="true">Yes</option>
+						<option value="false">No</option>
+					</select>
+				</div>
+				<div class="clear"></div>
+			</div>
+
+			<br/>
 		</div>
 
 		
