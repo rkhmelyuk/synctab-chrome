@@ -15,7 +15,7 @@ p { margin: 10px 0; }
 a { color: #073594; text-decoration: none; }
 a:hover { color: #073594; text-decoration: underline; }
 
-label { color: #555555; padding: 4px 0; font-size: 15px; display: block; }
+label { color: #555555; padding: 4px 0; font-size: 14px; display: block; }
 
 .clear { clear: both; }
 .custom { font-family: monospace; }
@@ -31,7 +31,10 @@ label { color: #555555; padding: 4px 0; font-size: 15px; display: block; }
 	border: 1px solid #e0e0e0; box-shadow: 0 1px 10px #afafaf;
 }
 
-#loginContent {
+#content.options { width: 680px; }
+
+
+#formContent {
 	width: 300px;
 	margin: 0 auto;
 }
@@ -73,3 +76,7 @@ input[type="text"]:hover, input[type="password"]:hover { border: 1px solid #bbbb
 
 #footer a { color: #444444; text-decoration: none; }
 #footer a:hover { color: #222222; text-decoration: underline; }
+.registerNow { color: #777777; text-align: right;}
+
+.checkPassword { float: right; padding: 7px 0 0;}
+.checkPassword label { display: inline; font-size: 0.9em; }

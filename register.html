@@ -5,74 +5,92 @@
 	<link href='http://fonts.googleapis.com/css?family=Alike' rel='stylesheet' type='text/css'>
 
 	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="common.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			/*
 			var bgPage = chrome.extension.getBackgroundPage();
 
-			if (!bgPage.needLogin()) {
-				$('#loginContent').hide();
-				$("#loggedInNowContent").hide();
-				$('#loggedInAlreadyContent').show();
-			}
-			else {
-				$('#login').click(function() {
-					var email = $("#email").val();
-					var password = $("#password").val();
-					if (email && password) {
-						bgPage.authorize(email, password, function(status) {
-							if (status) {
-								$("#loginContent").hide();
-								$("#loggedInNowContent").show();
+			$('#check').change(function() {
+				var password = $('#password')
+				if ($(this).is(":checked")) {
+					password.hide();
+					var showPassword = $("<input id='shownPassword' type='text' readonly/>");
+					showPassword.insertAfter(password).val(password.val());
+				}
+				else {
+					password.show();
+					$('#shownPassword').remove();
+				}
+			});
 
-								window.close();
-							}
-						});
-					}
-					else {
-						
-					}
-				});
-			}
-			*/
+			$('#registerForm').submit(function(e) {
+				e.preventDefault();
+
+				var email = $("#email").val().trim();
+				var password = $("#password").val().trim();
+				var hasError = false;
+
+				hasError |= validateEmail(email);
+				hasError |= validatePassword(password);
+
+				if (!hasError) {
+					bgPage.register(email, password, function(status, msg) {
+						if (status) {
+							$("#formContent").hide();
+							$("#registeredNowContent").show();
+						}
+						else {
+							$('#formError').text(msg).show();
+						}
+					});
+				}
+
+				return false;
+			});
 		});
 	</script>
 </head>
 <body>
 	<div id="content">
-		<div id="loginContent">
-			<h1><span>SyncTab:</span> Register</h1>
-			
-			<p>
-				<label for="email">Your Email</label>
-				<input type="text" id="email" value="" maxlength="400" autofocus="true"/>
-			</p>
+		<div id="formContent">
+			<form id="registerForm" action="">
+				<h1><span>SyncTab:</span> Register</h1>
 
-			<p>
-				<div>
-					<div style="float: left;"><label for="password">Your Password</label></div>
-					<div style="float: right;">
-						<input type="checkbox" id="check"/> <label for="check">Check Password</label>
+				<p id="formError" class="formError"></p>
+				
+				<p>
+					<label for="email">Your Email</label>
+					<input type="text" id="email" value="" maxlength="400" autofocus="true" tabindex="1"/>
+					<span id="emailError" class="error"></span>
+				</p>
+
+				<p>
+					<div>
+						<div style="float: left;"><label for="password">Your Password</label></div>
+						<div class="checkPassword">
+							<input type="checkbox" id="check" tabindex="6"/> <label for="check">Check Password</label>
+						</div>
 					</div>
-				</div>
-				<input type="password" id="password" value="" maxlength="100"/>
+					<input type="password" id="password" value="" maxlength="100" tabindex="2"/>
+					<span id="passwordError" class="error"></span>
+				</p>
+
+				<p><input type="submit" class="mainButton" value="Register" tabindex="3"/></p>
+				<div class="clear"></div>
+			</form>
+		</div>
+
+		<div id="registeredNowContent" class="notice" style="display: none">
+			<h2><span>SyncTab:</span> Notice</h2>
+			<p>
+				You are registered now.<br/><br/>
+				<a href="login.html">Login</a>
 			</p>
-
-			<p><button id="register" class="mainButton">Register</button></p>
-			<div class="clear"></div>
-
 		</div>
-		<div id="loggedInNowContent" style="display: none">
-			You are logged in now.
-		</div>
-		<div id="loggedInAlreadyContent" style="display: none">
-			You are logged in already.
-		</div>
-
 		
 		<div id="footer">
-			<div id="left">Copyright (c) 2011 <a href="http://www.khmelyuk.com">Ruslan Khmelyuk</a></div>
-			<div id="right"><a href="http://synctab.khmelyuk.com">synctab.khmelyuk.com</a></div>
+			<div id="left">Copyright (c) 2011 <a href="http://www.khmelyuk.com" tabindex="4">Ruslan Khmelyuk</a></div>
+			<div id="right"><a href="http://synctab.khmelyuk.com" tabindex="5">synctab.khmelyuk.com</a></div>
 			<div class="clear"></div>
 		</div>
 	</div>

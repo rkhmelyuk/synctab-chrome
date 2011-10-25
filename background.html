@@ -2,6 +2,10 @@
 	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript">
 
+		// TODO - options object
+		// TODO - security object
+		// TODO - externalize what possible
+
 		var syncPeriod = 60000;
 		var syncTabServiceUrl = "http://synctabapp.khmelyuk.com/api";
 
@@ -25,6 +29,19 @@
 					}
 					else {
 						callback(false);
+					}
+				}
+			);
+		}
+
+		function register(email, password, callback) {
+			$.post(syncTabServiceUrl + "/register", {email: email, password: password}, 
+				function(json, textStatus) {
+					if (json.status) {
+						callback(true, null);
+					}
+					else {
+						callback(false, json.message);
 					}
 				}
 			);

@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>SyncTab: Login</title>
+	<title>SyncTab: Options</title>
 	<link rel="stylesheet" type="text/css" href="styles.css"/>
 	<link href='http://fonts.googleapis.com/css?family=Alike' rel='stylesheet' type='text/css'>
 
@@ -9,7 +9,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var bgPage = chrome.extension.getBackgroundPage();
-
+			/*
 			if (!bgPage.needLogin()) {
 				$('#loginContent').hide();
 				$("#loggedInNowContent").hide();
@@ -49,17 +49,18 @@
 				$("#loggedInNowContent").hide();
 				$('#loggedInAlreadyContent').hide();
 			});
+			*/
 		});
 	</script>
 </head>
 <body>
-	<div id="content">
+	<div id="content" class="options">
 		<div id="formContent">
-			<form id="loginForm" action="">
-				<h1><span>SyncTab:</span> Login</h1>
+			<form id="optionsForm" action="">
+				<h1><span>SyncTab:</span> Options</h1>
 
 				<p id="formError" class="formError"></p>
-				
+				<!--
 				<p>
 					<label for="email">Your Email</label>
 					<input type="text" id="email" value="" maxlength="400" autofocus="true"/>
@@ -76,22 +77,8 @@
 				<div class="clear"></div>
 
 				<p class="registerNow">Don't have an account yet? - <a href="register.html">Register Now</a></p>
+				-->
 			</form>
-		</div>
-		<div id="loggedInNowContent" class="notice" style="display: none">
-			<h2><span>SyncTab:</span> Notice</h2>
-			<p>
-				You are logged in now.<br/><br/>
-				<a href="javascript:void(0);" onclick="window.close()">Continue Your Work</a>
-			</p>
-		</div>
-		<div id="loggedInAlreadyContent" class="notice" style="display: none">
-			<h2><span>SyncTab:</span> Notice</h2>
-			<p>
-				You are logged in as <span id="username" class="custom"></span> already.<br/><br/>
-				<a href="javascript:void(0);" id="logout">Logout</a> &nbsp;|&nbsp;
-				<a href="javascript:void(0);" onclick="window.close()">Close This Window</a>
-			</p>
 		</div>
 
 		

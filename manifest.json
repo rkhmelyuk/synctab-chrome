@@ -3,6 +3,7 @@
   "version": "1.0",
   "description": "Send tabs from phone to browser.",
   "background_page": "background.html",
+  "options_page": "options.html",
   "permissions": [
   	"tabs",
   	"background",
