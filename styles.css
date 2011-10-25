@@ -1,21 +1,3 @@
-@font-face {
-  	font-family: 'Alike';
-  	font-style: normal;
-  	font-weight: normal;
-  	src: local('Alike'), local('Alike-Regular'), url('font/Alike.woff') format('woff');
-}
-@font-face {
-  	font-family: 'Istok Web';
-  	font-style: italic;
-  	font-weight: 400;
-  	src: local('Istok Web Italic'), local('IstokWeb-Italic'), url('font/IstokWebItalic.woff') format('woff');
-}
-@font-face {
-	font-family: 'Istok Web';
-  	font-style: normal;
-  	font-weight: 400;
-  	src: local('Istok Web Regular'), local('IstokWeb-Regular'), url('font/IstokWeb.woff') format('woff');
-}
 
 * { margin: 0; padding: 0; }
 
@@ -53,7 +35,7 @@ label { color: #555555; padding: 4px 0; font-size: 14px; display: block; }
 
 #content #formContent { width: 300px; margin: 0 auto; }
 
-#content.options { width: 800px; margin: 20px auto;}
+#content.options { width: 800px; margin: 50px auto;}
 #content.options #formContent { width: 620px; margin: 0 auto; }
 
 input[type="text"], input[type="password"] { 
@@ -127,3 +109,22 @@ input[type="text"]:hover, input[type="password"]:hover { border: 1px solid #bbbb
 .option .value select { width: 100px;  padding: 3px;}
 
 #accountInfo { padding-bottom: 10px;}
+
+@font-face {
+  	font-family: 'Alike';
+  	font-style: normal;
+  	font-weight: normal;
+  	src: local('Alike'), local('Alike-Regular'), url('font/Alike.woff') format('woff');
+}
+@font-face {
+  	font-family: 'Istok Web';
+  	font-style: italic;
+  	font-weight: 400;
+  	src: local('Istok Web Italic'), local('IstokWeb-Italic'), url('font/IstokWebItalic.woff') format('woff');
+}
+@font-face {
+	font-family: 'Istok Web';
+  	font-style: normal;
+  	font-weight: 400;
+  	src: local('Istok Web Regular'), local('IstokWeb-Regular'), url('font/IstokWeb.woff') format('woff');
+}
