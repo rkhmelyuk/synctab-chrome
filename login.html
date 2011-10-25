@@ -5,16 +5,17 @@
 	<link href='http://fonts.googleapis.com/css?family=Alike' rel='stylesheet' type='text/css'>
 
 	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="synctab.js"></script>
 	<script type="text/javascript" src="common.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var bgPage = chrome.extension.getBackgroundPage();
 
-			if (!bgPage.needLogin()) {
-				$('#loginContent').hide();
+			if (!SyncTab.needLogin()) {
+				$('#formContent').hide();
 				$("#loggedInNowContent").hide();
 				$('#loggedInAlreadyContent').show();
-				$('#username').text(bgPage.getUsername());
+				$('#username').text(SyncTab.options.email.get());
 			}
 			
 			$('#loginForm').submit(function(e) {
@@ -28,8 +29,10 @@
 				hasError |= validatePassword(password);
 
 				if (!hasError) {
-					bgPage.authorize(email, password, function(status) {
+					SyncTab.authorize(email, password, function(status) {
 						if (status) {
+							bgPage.login();
+
 							$("#formContent").hide();
 							$("#loggedInNowContent").show();
 						}
@@ -45,7 +48,7 @@
 			$('#logout').click(function() {
 				bgPage.logout(false);
 
-				$('#loginContent').show();
+				$('#formContent').show();
 				$("#loggedInNowContent").hide();
 				$('#loggedInAlreadyContent').hide();
 			});
@@ -57,7 +60,6 @@
 		<div id="formContent">
 			<form id="loginForm" action="">
 				<h1><span>SyncTab:</span> Login</h1>
-
 				<p id="formError" class="formError"></p>
 				
 				<p>
@@ -82,15 +84,16 @@
 			<h2><span>SyncTab:</span> Notice</h2>
 			<p>
 				You are logged in now.<br/><br/>
-				<a href="javascript:void(0);" onclick="window.close()">Continue Your Work</a>
+				<!--<a href="javascript:void(0);" onclick="window.close()">Continue Your Work</a>-->
 			</p>
 		</div>
 		<div id="loggedInAlreadyContent" class="notice" style="display: none">
 			<h2><span>SyncTab:</span> Notice</h2>
 			<p>
 				You are logged in as <span id="username" class="custom"></span> already.<br/><br/>
-				<a href="javascript:void(0);" id="logout">Logout</a> &nbsp;|&nbsp;
-				<a href="javascript:void(0);" onclick="window.close()">Close This Window</a>
+				<a href="javascript:void(0);" id="logout">Logout</a> 
+				<!--&nbsp;|&nbsp;
+				<a href="javascript:void(0);" onclick="window.close()">Close This Window</a>-->
 			</p>
 		</div>
 

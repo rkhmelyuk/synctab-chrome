@@ -1,132 +1,87 @@
 <html>
 	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="synctab.js"></script>
 	<script type="text/javascript">
-
-		// TODO - options object
-		// TODO - security object
-		// TODO - externalize what possible
-
-		var syncPeriod = 60000;
-		var syncTabServiceUrl = "http://synctabapp.khmelyuk.com/api";
 
 		var refreshInterval;
 
 		function load() {
-			if (needLogin()) {
-			 	chrome.tabs.create({url: 'login.html'});
+			SyncTab.initOptions();
+
+			if (SyncTab.needLogin()) {
+			 	SyncTab.openLoginPage();
 			}
 			else {
-				refreshInterval = setInterval(refreshSyncedTabs, syncPeriod);
+				startRefreshWithInterval();
 			}
 		}
 
-		function authorize(email, password, callback) {
-			$.post(syncTabServiceUrl + "/authorize", {email: email, password: password}, 
-				function(json, textStatus) {
-					if (json.status) {
-						login(email, json.token)
-						callback(true);
-					}
-					else {
-						callback(false);
-					}
-				}
-			);
-		}
-
-		function register(email, password, callback) {
-			$.post(syncTabServiceUrl + "/register", {email: email, password: password}, 
-				function(json, textStatus) {
-					if (json.status) {
-						callback(true, null);
-					}
-					else {
-						callback(false, json.message);
-					}
-				}
-			);
-		}
-
-		function needLogin() {
-			var token = localStorage['token'];
-			return token == null || token == undefined;
-		}
-
-		function login(email, token) {
-			localStorage['email'] = email;
-			localStorage['token'] = token;
-
+		function login() {
 			refreshSyncedTabs();
-			refreshInterval = setInterval(refreshSyncedTabs, syncPeriod);
-		}
-
-		function getUsername() {
-			return localStorage['email'];
+			startRefreshWithInterval();
 		}
 
 		function logout(showLoginPage) {
-			// TODO - logout remotely 
-			clearSession();
+			SyncTab.logout();
+			stopRefreshWithInterval();
 
 			if (showLoginPage) {
-				chrome.tabs.create({url: 'login.html'});
+				SyncTab.openLoginPage();
 			}
-		}
-
-		function clearSession() {
-			clearInterval(refreshInterval);
-			delete localStorage['token'];
-			delete localStorage['email'];
 		}
 
 		function refreshSyncedTabs() {
-			if (!needLogin()) {
-					
-				// get last sync timestamp
-				var timestamp = localStorage['lastSyncDate'];
-				if (timestamp == undefined) {
-					var yesterday = new Date();
-					yesterday.setDate(yesterday.getDate() - 1);
-					timestamp = yesterday.getTime();
-				}
-
-				var token = localStorage['token'];
-				$.ajax({
-					url: syncTabServiceUrl + "/getSharedTabs", 
-					dataType: 'json', 
-					data: {'ts': timestamp, 'token': token},
-					success: function(json, textStatus, jqXHR) {
-						if (jqXHR.status == 200) {
-							if (json.status) {
-								var tabs = json.tabs;
-								if (tabs.length > 0) {
-									for (var i = 0; i < tabs.length; i++) {
-										var tab = tabs[i];
-										chrome.tabs.create({
-											url: tab.link,
-											selected: false,
-											pinned: false
-										})
-									}
-									webkitNotifications.createNotification(
-										"icon48.png", "SyncTab: new tabs", 
-										tabs.length + " shared tabs were opened"
-									).show();
-
-									// save sync timestamp
-									localStorage['lastSyncDate'] = new Date().getTime();
-								}
-							}
-						}
-					},
-					error: function(jqXHR) {
-						if (jqXHR.status == 401) {
-							logout(true);
-						}
-					}
-				});
+			if (!SyncTab.needLogin()) {
+				loadNewTabs();
 			}
 			else {
+				stopRefreshWithInterval();
+			}
+		}
+
+		function loadNewTabs() {
+			var token = SyncTab.options.token.get()
+			var timestamp = SyncTab.options.lastSyncDate.get();
+
+			// if checked for first time, than set date = yesterday
+			if (timestamp == undefined) {
+				var yesterday = new Date();
+				yesterday.setDate(yesterday.getDate() - 1);
+				timestamp = yesterday.getTime();
+			}
+
+			$.ajax({
+				url: SyncTab.apiUrl + "/getSharedTabs", 
+				dataType: 'json', 
+				data: {'ts': timestamp, 'token': token},
+				success: function(json, textStatus, jqXHR) {
+					if (jqXHR.status == 200) {
+						if (json.status) {
+							SyncTab.handleNewTabs(json.tabs);
+						}
+					}
+				},
+				error: function(jqXHR) {
+					if (jqXHR.status == 401) {
+						logout(true);
+					}
+				}
+			});
+		}
+
+		function optionsChanged() {
+			stopRefreshWithInterval();
+			startRefreshWithInterval();
+		}
+
+		function startRefreshWithInterval() {
+			refreshInterval = setInterval(
+				refreshSyncedTabs, 
+				SyncTab.options.refreshInterval.get());
+		}
+
+		function stopRefreshWithInterval() {
+			if (refreshInterval) {
 				clearInterval(refreshInterval);
 			}
 		}

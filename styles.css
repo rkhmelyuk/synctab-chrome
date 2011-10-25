@@ -31,13 +31,10 @@ label { color: #555555; padding: 4px 0; font-size: 14px; display: block; }
 	border: 1px solid #e0e0e0; box-shadow: 0 1px 10px #afafaf;
 }
 
-#content.options { width: 680px; }
+#content #formContent { width: 300px; margin: 0 auto; }
 
-
-#formContent {
-	width: 300px;
-	margin: 0 auto;
-}
+#content.options { width: 800px; margin: 20px auto;}
+#content.options #formContent { width: 800px; margin: 0 auto; }
 
 input[type="text"], input[type="password"] { 
 	border: 1px solid #dfdfdf; 
