@@ -2,54 +2,52 @@
 <head>
 	<title>SyncTab: Options</title>
 	<link rel="stylesheet" type="text/css" href="styles.css"/>
-	<link href='http://fonts.googleapis.com/css?family=Alike' rel='stylesheet' type='text/css'>
 
 	<script type="text/javascript" src="jquery.min.js"></script>
-	<script type="text/javascript" src="common.js"></script>
+	<script type="text/javascript" src="synctab.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var bgPage = chrome.extension.getBackgroundPage();
-			/*
-			if (!bgPage.needLogin()) {
-				$('#loginContent').hide();
-				$("#loggedInNowContent").hide();
-				$('#loggedInAlreadyContent').show();
-				$('#username').text(bgPage.getUsername());
+
+			var options = SyncTab.options;
+
+			if (SyncTab.needLogin()) {
+				$('#accountInfo').hide();
+				$('#guest').show();
 			}
-			
-			$('#loginForm').submit(function(e) {
-				e.preventDefault();
 
-				var email = $("#email").val().trim();
-				var password = $("#password").val().trim();
-				var hasError = false;
-
-				hasError |= validateEmail(email);
-				hasError |= validatePassword(password);
-
-				if (!hasError) {
-					bgPage.authorize(email, password, function(status) {
-						if (status) {
-							$("#formContent").hide();
-							$("#loggedInNowContent").show();
-						}
-						else {
-							$('#formError').text("Incorrect Email or Password").show();
-						}
-					});
-				}
-
-				return false;
-			});
+			$('#email').text(options.email.get());
+			$("#addToBookmarks").val(options.addToBookmarks.get());
+			$("#refreshInterval").val(options.refreshInterval.get());
+			$("#selectOpenedTab").val(options.selectOpenedTab.get());
+			$("#showNotifications").val(options.showNotifications.get());
 
 			$('#logout').click(function() {
 				bgPage.logout(false);
 
-				$('#loginContent').show();
-				$("#loggedInNowContent").hide();
-				$('#loggedInAlreadyContent').hide();
+				$('#accountInfo').hide();
+				$('#guest').show();
 			});
-			*/
+
+			$('#optionsForm').submit(function(e) {
+				e.preventDefault();
+
+				var refreshInterval = $("#refreshInterval").val();
+				var addToBookmarks = $("#addToBookmarks").val().trim();
+				var selectOpenedTab = $("#selectOpenedTab").val().trim();
+				var showNotifications = $("#showNotifications").val().trim();
+
+				options.addToBookmarks.set(addToBookmarks);
+				options.refreshInterval.set(refreshInterval);
+				options.selectOpenedTab.set(selectOpenedTab);
+				options.showNotifications.set(showNotifications);
+
+				bgPage.optionsChanged();
+
+				$('#saveOptionsStatus').show().delay(2500).fadeOut('fast');
+				
+				return false;
+			});
 		});
 	</script>
 </head>
@@ -59,25 +57,86 @@
 			<form id="optionsForm" action="">
 				<h1><span>SyncTab:</span> Options</h1>
 
-				<p id="formError" class="formError"></p>
-				<!--
-				<p>
-					<label for="email">Your Email</label>
-					<input type="text" id="email" value="" maxlength="400" autofocus="true"/>
-					<span id="emailError" class="error"></span>
-				</p>
-
-				<p>
-					<label for="password">Your Password</label>
-					<input type="password" id="password" value="" maxlength="100"/>
-					<span id="passwordError" class="error"></span>
-				</p>
-
-				<p><input type="submit" id="login" class="mainButton" value="Login"/></p>
+				<div id="guest" style="display: none; float: right;">
+					<a href="login.html">Login</a> -
+					<a href="register.html">Register Now</a>
+				</div>
 				<div class="clear"></div>
 
-				<p class="registerNow">Don't have an account yet? - <a href="register.html">Register Now</a></p>
-				-->
+				<div id="accountInfo" class="option">
+					<div class="info">
+						<div class="title">Account</div>
+						<div class="description">What account you're currently using</div>
+					</div>
+					<div class="value">
+						<strong><span id="email"></span></strong>&nbsp;&nbsp;
+						<button id="logout" class="logoutButton">Logout</button>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="option">
+					<div class="info">
+						<div class="title">Refresh Period</div>
+						<div class="description">How often to check for and pull new tabs?</div>
+					</div>
+					<div class="value">
+						<select id="refreshInterval">
+							<option value="60000">1 minute</option>
+							<option value="180000">3 minutes</option>
+							<option value="300000">5 minutes</option>
+							<option value="600000">10 minutes</option>
+						</select>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="option">
+					<div class="info">
+						<div class="title">Show Notifications</div>
+						<div class="description">Do you want to see any notifications about just opened tabs?</div>
+					</div>
+					<div class="value">
+						<select id="showNotifications">
+							<option value="true">Yes</option>
+							<option value="false">No</option>
+						</select>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="option">
+					<div class="info">
+						<div class="title">Select Tab on Open</div>
+						<div class="description">Do you want to select a new tab when it's open in a browser?</div>
+					</div>
+					<div class="value">
+						<select id="selectOpenedTab">
+							<option value="true">Yes</option>
+							<option value="false">No</option>
+						</select>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<div class="option">
+					<div class="info">
+						<div class="title">Add Tabs to Bookmarks</div>
+						<div class="description">We may add a shared tabs to the browser bookmarks, so later you can back to them (of course, if you don't forget about bookmarks). Do you want that?</div>
+					</div>
+					<div class="value">
+						<select id="addToBookmarks">
+							<option value="true">Yes</option>
+							<option value="false">No</option>
+						</select>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+				<input type="submit" id="save" class="mainButton" value="Save"/></p>
+				<p id="saveOptionsStatus">Saved!</p>
+				<div class="clear"></div>
+
 			</form>
 		</div>
 

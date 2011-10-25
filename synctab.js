@@ -30,6 +30,8 @@ var SyncTab = {
 		email: _optionWrapper('email'),
 		token: _optionWrapper('token'),
 		lastSyncDate: _optionWrapper('lastSyncDate'),
+		addToBookmarks: _optionWrapper('addToBookmarks'),
+		selectOpenedTab: _optionWrapper('selectOpenedTab'),
 		refreshInterval: _optionWrapper('refreshInterval'),
 		showNotifications: _optionWrapper('showNotifications')
 	},
@@ -47,6 +49,8 @@ var SyncTab = {
 	initOptions: function() {
 		SyncTab.options.refreshInterval.setIfNothing(60000);
 		SyncTab.options.showNotifications.setIfNothing(true);
+		SyncTab.options.selectOpenedTab.setIfNothing(false);
+		SyncTab.options.addToBookmarks.setIfNothing(false);
 	},
 
 	/**
@@ -66,12 +70,7 @@ var SyncTab = {
 
 			// Open browser tabs for each received shared tab.
 			for (var i = 0; i < tabs.length; i++) {
-				var tab = tabs[i];
-				chrome.tabs.create({
-					url: tab.link,
-					selected: false,
-					pinned: false
-				})
+				SyncTab.handleNewTab(tabs[i]);
 			}
 
 			// Show notification if enabled.
@@ -82,6 +81,14 @@ var SyncTab = {
 			// Save sync timestamp.
 			SyncTab.options.lastSyncDate.set(new Date().getTime());
 		}
+	},
+
+	handleNewTab: function(tab) {
+		chrome.tabs.create({
+			url: tab.link,
+			selected: false,
+			pinned: false
+		});
 	},
 
 	/**

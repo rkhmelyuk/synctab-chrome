@@ -2,12 +2,14 @@
   "name": "SyncTab",
   "version": "1.0",
   "description": "Send tabs from phone to browser.",
+  "homepage_url": "http://synctab.khmelyuk.com",
   "background_page": "background.html",
   "options_page": "options.html",
   "permissions": [
   	"tabs",
   	"background",
   	"notifications",
+    "bookmarks",
     "http://synctabapp.khmelyuk.com/"
   ],
   "icons": {
