@@ -99,10 +99,12 @@ var SyncTab = {
 		});
 
 		if (SyncTab.options.addToBookmarks.getBoolean()) {
+			var title = tab.title;
+			if (!title) { title  = "" }
 			chrome.bookmarks.create({
 				parentId: "1",
 				url: tab.link,
-				title: tab.title
+				title: title 
 			});
 		}
 	},
