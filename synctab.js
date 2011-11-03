@@ -92,20 +92,25 @@ var SyncTab = {
 	 * Handle new tab: open and add to bookmarks if enabled.
 	 */
 	handleNewTab: function(tab) {
-		chrome.tabs.create({
-			url: tab.link,
-			selected: SyncTab.options.selectOpenedTab.getBoolean(),
-			pinned: false
-		});
-
-		if (SyncTab.options.addToBookmarks.getBoolean()) {
-			var title = tab.title;
-			if (!title) { title  = "" }
-			chrome.bookmarks.create({
-				parentId: "1",
+		try {
+			chrome.tabs.create({
 				url: tab.link,
-				title: title 
+				selected: SyncTab.options.selectOpenedTab.getBoolean(),
+				pinned: false
 			});
+
+			if (SyncTab.options.addToBookmarks.getBoolean()) {
+				var title = tab.title;
+				if (!title) { title  = "" }
+				chrome.bookmarks.create({
+					parentId: "1",
+					url: tab.link,
+					title: title 
+				});
+			}
+		}
+		catch (err) {
+			// do nothing
 		}
 	},
 
