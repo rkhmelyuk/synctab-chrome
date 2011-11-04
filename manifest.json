@@ -1,6 +1,6 @@
 {
   "name": "SyncTab",
-  "version": "1.0b",
+  "version": "1.0.0",
   "description": "Send tabs from phone to browser.",
   "homepage_url": "http://synctab.khmelyuk.com",
   "background_page": "background.html",
