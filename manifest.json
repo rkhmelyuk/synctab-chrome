@@ -1,6 +1,6 @@
 {
   "name": "SyncTab",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Send tabs from phone to your browser",
   "homepage_url": "http://synctab.khmelyuk.com",
   "background_page": "background.html",
@@ -17,6 +17,8 @@
     "32": "icon32.png",
     "48": "icon48.png",
     "64": "icon64.png",
+    "96": "icon96.png",
+    "112": "icon112.png",
     "128": "icon.png"
   }
 }
