@@ -1,0 +1,69 @@
+<html>
+<head>
+	<title>SyncTab: Send Link</title>
+	<link rel="stylesheet" type="text/css" href="styles.css"/>
+
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="synctab.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			if (SyncTab.needLogin()) {
+				$('#login').show();
+				$('#share').hide();
+			}
+			else {
+				var options = SyncTab.options;
+				var bgPage = chrome.extension.getBackgroundPage();
+
+				function showTags() {
+					var tags = options.tags.getArray();
+					var currentTagId = options.tag.get();
+
+					var tagsLen = tags.length;
+					for (var i = 0; i < tagsLen; i++) {
+						var tag = tags[i];
+						if (tag.id != currentTagId) {
+							$('.tags').append("<div class='tag' rel='" + tag.id + "'>" + tag.name + "</div>");
+						}
+					}
+				}
+				
+				var tags = options.tags.getArray();
+				if (tags) {
+					showTags();
+				}
+				else {
+					SyncTab.loadTags(function(status) {
+						if (status) showTags();
+					});
+				}
+			}
+
+			$('.tag').click(function() {
+				var tagId = $(this).attr('rel');
+				chrome.tabs.getSelected(null, function(tab) {
+					SyncTab.shareTab(tab.url, tagId, function(status) {alert(status)});
+					//window.close();
+				});
+			});
+			$('#loginNow').click(function() {
+				SyncTab.openLoginPage();
+				window.close();
+			})
+		});
+	</script>
+</head>
+<body>
+	<div id="popup">
+		<div id="share">
+			<h1>Send Page To...</h1>
+			<div class="tags"></div>
+		</div>
+		<div id="login" style="display: none;padding: 10px 0; text-align: center;">
+			<strong>You Need to Login First</strong><br/>
+			<p style="text-align: center;"><a href="javascript:void(0);" id="loginNow">Login Now</a></p>
+		</div>
+	</div>
+</body>
+</html>
