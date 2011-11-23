@@ -140,6 +140,8 @@ input[type="text"]:hover, input[type="password"]:hover { border: 1px solid #bbbb
 .option .value select { width: 100px;  padding: 3px;}
 
 #accountInfo { padding-bottom: 10px;}
+#in_progress { display: none; text-align: center; }
+#popup #login { display: none; padding: 10px 0; text-align: center; }
 
 @font-face {
   	font-family: 'Alike';

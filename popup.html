@@ -42,9 +42,12 @@
 
 			$('.tag').click(function() {
 				var tagId = $(this).attr('rel');
+				$('.tags').hide();
+				$('#in_progress').show();
 				chrome.tabs.getSelected(null, function(tab) {
-					SyncTab.shareTab(tab.url, tagId, function(status) {alert(status)});
-					//window.close();
+					SyncTab.shareTab(tab.url, tagId, function(status) {
+						window.close();
+					});
 				});
 			});
 			$('#loginNow').click(function() {
@@ -59,10 +62,11 @@
 		<div id="share">
 			<h1>Send Page To...</h1>
 			<div class="tags"></div>
+			<div id="in_progress">Sending a page...</div>
 		</div>
-		<div id="login" style="display: none;padding: 10px 0; text-align: center;">
+		<div id="login">
 			<strong>You Need to Login First</strong><br/>
-			<p style="text-align: center;"><a href="javascript:void(0);" id="loginNow">Login Now</a></p>
+			<p><a href="javascript:void(0);" id="loginNow">Login Now</a></p>
 		</div>
 	</div>
 </body>

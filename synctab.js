@@ -37,8 +37,7 @@ var _optionWrapper = function(name) {
 
 var SyncTab = {
 
-	//apiUrl: "http://synctabapp.khmelyuk.com/api",
-	apiUrl: "http://192.168.1.101:8080/api",
+	apiUrl: "http://synctabapp.khmelyuk.com/api",
 
 	device: 'Chrome',
 	defaultTagName: 'Chrome',
@@ -262,13 +261,9 @@ var SyncTab = {
 					'token': SyncTab.options.token.get()
 				},
 				success: function(json, textStatus, jqXHR) {
-					alert(json);
 					callback(json.status);
 				},
-				error: function(jqXHR) {
-					alert(jqXHR.status);
-					callback(false);
-				}
+				error: function(jqXHR) { callback(false); }
 			});
 		}
 	}
