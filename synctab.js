@@ -9,6 +9,13 @@ var _optionWrapper = function(name) {
 		getBoolean: function() {
 			return localStorage[name] === 'true';
 		},
+		getArray: function() {	
+			var value = localStorage[name];
+			if (value) {
+				return JSON.parse(value);
+			}
+			return [];
+		},
 		set: function(value) {
 			localStorage[name] = value;
 		},
@@ -30,9 +37,15 @@ var _optionWrapper = function(name) {
 
 var SyncTab = {
 
-	apiUrl: "http://synctabapp.khmelyuk.com/api",
+	//apiUrl: "http://synctabapp.khmelyuk.com/api",
+	apiUrl: "http://192.168.1.101:8080/api",
+
+	device: 'Chrome',
+	defaultTagName: 'Chrome',
 
 	options: {
+		tag: _optionWrapper('tag'),
+		tags: _optionWrapper('tags'),
 		email: _optionWrapper('email'),
 		token: _optionWrapper('token'),
 		lastSyncDate: _optionWrapper('lastSyncDate'),
@@ -136,8 +149,11 @@ var SyncTab = {
 	 * Authorize user by email and password.
 	 */
 	authorize: function(email, password, callback) {
-		$.post(SyncTab.apiUrl + "/authorize", {email: email, password: password}, 
-			function(json, textStatus) {
+		$.ajax({
+			type: 'POST',
+			url: SyncTab.apiUrl + "/authorize",
+			data: {email: email, password: password},
+			success: function(json, textStatus, jqXHR) {
 				if (json.status) {
 					SyncTab.options.email.set(email);
 					SyncTab.options.token.set(json.token);
@@ -147,24 +163,33 @@ var SyncTab = {
 				else {
 					callback(false);
 				}
+			},
+			error: function(jqXHR) {
+				callback(false);
 			}
-		);
+		})
 	},
 
 	/** 
 	 * Register user by email and password.
 	 */
 	register: function(email, password, callback) {
-		$.post(SyncTab.apiUrl + "/register", {email: email, password: password}, 
-			function(json, textStatus) {
+		$.ajax({
+			type: 'POST',
+			url: SyncTab.apiUrl + "/register",
+			data: {email: email, password: password},
+			success: function(json, textStatus, jqXHR) {
 				if (json.status) {
 					callback(true, null);
 				}
 				else {
 					callback(false, json.message);
 				}
+			},
+			error: function(jqXHR) {
+				callback(false, "Unexpected Server Error. Please try again or later.");
 			}
-		);
+		});
 	},
 
 	/** 
@@ -173,9 +198,78 @@ var SyncTab = {
 	logout: function() {
 		var token = SyncTab.options.token;
 		if (!token.isEmpty()) {
-			// TODO - implement me
 			SyncTab.options.token.clear();
 			SyncTab.options.email.clear();
+			SyncTab.options.tags.clear();
+			SyncTab.options.tag.clear();
+		}
+	},
+
+	/**
+	 * Loads the list of tags.
+	 */
+	loadTags: function(callback) {
+		$.ajax({
+			url: SyncTab.apiUrl + "/getTags", 
+			dataType: 'json', 
+			data: {'token': SyncTab.options.token.get()},
+			success: function(json, textStatus, jqXHR) {
+				if (json.status) {
+					var tags = json.tags;
+
+					SyncTab._setCurrentTag(tags);
+					SyncTab.options.tags.set(JSON.stringify(tags));
+
+					// say it's read and OK
+					callback(true);
+				}
+				else {
+					callback(false);
+				}
+			},
+			error: function(jqXHR) {
+				if (jqXHR.status == 401) {
+					var bgPage = chrome.extension.getBackgroundPage();
+					bgPage.logout(true);
+				}
+				callback(false);
+			}
+		});
+	},
+
+	_setCurrentTag: function(tags) {
+		if (!SyncTab.options.tag.get()) {
+			// set current tag for browser to be Chrome
+			var tagsLen = tags.length;
+			for (var i = 0; i < tagsLen; i++) {
+				var tag = tags[i];
+				if (tag.name == SyncTab.defaultTagName) {
+					SyncTab.options.tag.set(tag.id);
+					break;
+				}
+			}					
+		}
+	},
+
+	shareTab: function(link, tagId, callback) {
+		if (link && tagId) {
+			$.ajax({
+				type: 'POST',
+				url: SyncTab.apiUrl + "/shareTab",
+				data: {
+					'link': link, 'tagId': tagId, 
+					'device': SyncTab.device, 
+					'token': SyncTab.options.token.get()
+				},
+				success: function(json, textStatus, jqXHR) {
+					alert(json);
+					callback(json.status);
+				},
+				error: function(jqXHR) {
+					alert(jqXHR.status);
+					callback(false);
+				}
+			});
 		}
 	}
 };

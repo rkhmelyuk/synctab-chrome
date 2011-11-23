@@ -31,9 +31,7 @@
 					SyncTab.authorize(email, password, function(status) {
 						if (status) {
 							bgPage.login();
-
-							$("#formContent").hide();
-							$("#loggedInNowContent").show();
+							document.location = "options.html";
 						}
 						else {
 							$('#formError').text("Incorrect Email or Password").show();
@@ -78,13 +76,6 @@
 
 				<p class="registerNow">Don't have an account yet? - <a href="register.html">Register Now</a></p>
 			</form>
-		</div>
-		<div id="loggedInNowContent" class="notice" style="display: none">
-			<h2><span>SyncTab:</span> Notice</h2>
-			<p>
-				You are logged in now.<br/><br/>
-				<!--<a href="javascript:void(0);" onclick="window.close()">Continue Your Work</a>-->
-			</p>
 		</div>
 		<div id="loggedInAlreadyContent" class="notice" style="display: none">
 			<h2><span>SyncTab:</span> Notice</h2>
