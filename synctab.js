@@ -37,8 +37,7 @@ var _optionWrapper = function(name) {
 
 var SyncTab = {
 
-	//apiUrl: "http://synctabapp.khmelyuk.com/api",
-	apiUrl: "http://192.168.1.101:8080/api",
+	apiUrl: "http://synctabapp.khmelyuk.com/api",
 
 	device: 'Chrome',
 	defaultTagName: 'Chrome',
@@ -201,7 +200,6 @@ var SyncTab = {
 			SyncTab.options.token.clear();
 			SyncTab.options.email.clear();
 			SyncTab.options.tags.clear();
-			SyncTab.options.tag.clear();
 		}
 	},
 
