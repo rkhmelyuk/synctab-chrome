@@ -37,7 +37,8 @@ var _optionWrapper = function(name) {
 
 var SyncTab = {
 
-	apiUrl: "http://synctabapp.khmelyuk.com/api",
+	//apiUrl: "http://synctabapp.khmelyuk.com/api",
+	apiUrl: "http://192.168.1.101:8080/api",
 
 	device: 'Chrome',
 	defaultTagName: 'Chrome',

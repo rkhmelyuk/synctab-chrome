@@ -5,6 +5,30 @@
 
 		var refreshInterval;
 
+		function setupMenu() {
+			var tags = SyncTab.options.tags.getArray();
+			var currentTagId = SyncTab.options.tag.get();
+
+			chrome.contextMenus.removeAll();
+
+			var tagsLen = tags.length;
+			for (var i = 0; i < tagsLen; i++) {
+				var tag = tags[i];
+				if (tag.id != currentTagId) {
+					chrome.contextMenus.create({
+						type: "normal",
+						title: "Send to " + tag.name,
+						contexts: ["link"],
+						onclick: function(info, link) {
+							SyncTab.shareTab(info.linkUrl, tag.id, 
+								function(status) {});
+
+						}
+					});
+				}
+			}
+		}
+
 		function load() {
 			SyncTab.initOptions();
 
@@ -13,6 +37,7 @@
 			}
 			else {
 				startRefreshWithInterval();
+				setupMenu();
 			}
 		}
 
@@ -69,7 +94,9 @@
 			});
 
 			// refresh the list of tags
-			SyncTab.loadTags(function(val) {});
+			SyncTab.loadTags(function(val) {
+				setupMenu();
+			});
 		}
 
 		function optionsChanged() {

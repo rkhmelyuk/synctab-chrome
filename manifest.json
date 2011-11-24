@@ -14,8 +14,10 @@
     "tabs",
     "bookmarks",
   	"background",
-  	"notifications",
-    "http://synctabapp.khmelyuk.com/"
+    "contextMenus",
+    "notifications",
+    "http://synctabapp.khmelyuk.com/",
+    "http://192.168.1.101/"
   ],
   "icons": {
     "16": "icon16.png",
