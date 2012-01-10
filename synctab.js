@@ -203,6 +203,28 @@ var SyncTab = {
 		}
 	},
 
+	/** 
+	 * Resets the user password.
+	 */
+	resetPassword: function(email, callback) {
+		$.ajax({
+			type: 'POST',
+			url: SyncTab.apiUrl + "/resetPassword",
+			data: {email: email},
+			success: function(json, textStatus, jqXHR) {
+				if (json.status) {
+					callback(true);
+				}
+				else {
+					callback(false);
+				}
+			},
+			error: function(jqXHR) {
+				callback(false);
+			}
+		})
+	},
+
 	/**
 	 * Loads the list of tags.
 	 */

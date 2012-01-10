@@ -11,6 +11,8 @@ h1 { padding: 15px 0 15px; font-size: 30px; color: #444444; }
 h1 span, h2 span { color: #777777; }
 h3 { }
 
+#resetPasswordForm h1 { font-size: 26px; }
+
 p { margin: 10px 0; }
 
 a { color: #073594; text-decoration: none; }
@@ -97,11 +99,11 @@ input[type="text"]:hover, input[type="password"]:hover { border: 1px solid #bbbb
 
 .logoutButton { 
 	cursor: pointer; 
-    padding: 2px 7px;
-    box-shadow:  1px 1px 2px #aaaaaa; border: none;
-    font: 13px arial,freesans,clean,sans-serif; 
-    line-height: 19px; color: #222222; text-shadow: 1px 1px 1px #ffffff;
-    border-radius: 3px 2px; -webkit-border-radius: 3px 2px; -moz-border-radius: 3px 2px;
+  padding: 2px 7px;
+  box-shadow:  1px 1px 2px #aaaaaa; border: none;
+  font: 13px arial,freesans,clean,sans-serif; 
+  line-height: 19px; color: #222222; text-shadow: 1px 1px 1px #ffffff;
+  border-radius: 3px 2px; -webkit-border-radius: 3px 2px; -moz-border-radius: 3px 2px;
 	background: -webkit-gradient(linear, left top, left bottom, from(#E6E6E6), to(#D1D1D1));}
 
 .logoutButton:hover {
