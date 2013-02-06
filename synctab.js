@@ -84,7 +84,6 @@ var SyncTab = {
 	 */
 	handleNewTabs: function(tabs) {
 		if (tabs.length > 0) {
-
 			// Open browser tabs for each received shared tab.
 			for (var i = 0; i < tabs.length; i++) {
 				SyncTab.handleNewTab(tabs[i]);
