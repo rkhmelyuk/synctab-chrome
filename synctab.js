@@ -89,10 +89,12 @@ var SyncTab = {
 				SyncTab.handleNewTab(tabs[i]);
 			}
 
+			/*
 			// Show notification if enabled.
 			if (SyncTab.options.showNotifications.getBoolean()) {
 				SyncTab.showNotification(tabs);
 			}
+			*/
 
 			// Save sync timestamp.
 			SyncTab.options.lastSyncDate.set(new Date().getTime());
@@ -138,9 +140,9 @@ var SyncTab = {
 			message += " shared tabs were opened.";
 		}
 
-		webkitNotifications.createNotification(
+		/*webkitNotifications.createNotification(
 			"icon48.png", "SyncTab: new tabs",  message
-		).show();
+		).show();*/
 	},
 
 	/** 

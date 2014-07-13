@@ -38,7 +38,7 @@ $(document).ready(function() {
 	$("#addToBookmarks").val(options.addToBookmarks.get());
 	$("#refreshInterval").val(options.refreshInterval.get());
 	$("#selectOpenedTab").val(options.selectOpenedTab.get());
-	$("#showNotifications").val(options.showNotifications.get());
+	//$("#showNotifications").val(options.showNotifications.get());
 
 	$('#logout').click(function() {
 		bgPage.logout(false);
@@ -53,13 +53,13 @@ $(document).ready(function() {
 		var refreshInterval = $("#refreshInterval").val();
 		var addToBookmarks = $("#addToBookmarks").val().trim();
 		var selectOpenedTab = $("#selectOpenedTab").val().trim();
-		var showNotifications = $("#showNotifications").val().trim();
+		//var showNotifications = $("#showNotifications").val().trim();
 
 		options.tag.set(tag);
 		options.addToBookmarks.set(addToBookmarks);
 		options.refreshInterval.set(refreshInterval);
 		options.selectOpenedTab.set(selectOpenedTab);
-		options.showNotifications.set(showNotifications);
+		//options.showNotifications.set(showNotifications);
 
 		bgPage.optionsChanged();
 	});
